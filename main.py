@@ -15,6 +15,8 @@ model = YOLO("yolov8n.pt")
 tracker = Tracker()
 
 colors = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for j in range(10)]
+
+detection_threshold = 0.5
 while ret:
 
     results = model(frame)
@@ -28,7 +30,8 @@ while ret:
             y1 = int(y1)
             y2 = int(y2)
             class_id = int(class_id)
-            detections.append([x1, y1, x2, y2, score])
+            if score > detection_threshold:
+                detections.append([x1, y1, x2, y2, score])
 
         tracker.update(frame, detections)
 
